@@ -1,0 +1,10 @@
+<script type="module">
+	import storage from './kv-storage-polyfill.mjs';
+	(async function() {
+		try {
+			await storage.set('yo', 'face');
+		} catch(e) {
+			alert('firefox incognito');//https://bugzilla.mozilla.org/show_bug.cgi?id=781982
+		}
+	})();
+</script>
