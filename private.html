@@ -35,6 +35,7 @@
 		(async function() {
 			try {
 				await (await navigator.serviceWorker.register('ServiceWorker.js')).unregister();
+				await (await navigator.serviceWorker.getRegistration())?.unregister();
 				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
 			} catch(e) {
 				let a = document.createElement('a');
