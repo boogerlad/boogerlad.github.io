@@ -37,6 +37,7 @@
 				await (await navigator.serviceWorker.register('ServiceWorker.js')).unregister();
 				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
 			} catch(e) {
+				console.error(e);
 				let a = document.createElement('a');
 				a.appendChild(document.createTextNode(`yes in ${performance.now() - beginning} ms`));
 				a.href = 'https://bugs.chromium.org/p/chromium/issues/detail?id=818045#c35';
