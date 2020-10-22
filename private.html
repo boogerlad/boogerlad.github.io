@@ -1,0 +1,48 @@
+<script type="module">
+	import storage from './kv-storage-polyfill.mjs';
+	let beginning = performance.now();
+	if("MozAppearance" in document.documentElement.style) {
+		document.body.appendChild(document.createTextNode(`firefox detected in ${performance.now() - beginning}ms`));
+		document.body.appendChild(document.createElement("br"));
+		beginning = performance.now();
+		document.body.appendChild(document.createTextNode(`private `));
+		if(navigator.serviceWorker) {
+			document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`))
+		} else {
+			let a = document.createElement('a');
+			a.appendChild(document.createTextNode(`yes in ${performance.now() - beginning} ms`));
+			a.href = 'https://bugzilla.mozilla.org/show_bug.cgi?id=1601916'
+			document.body.appendChild(a);
+		}
+		beginning = performance.now();
+		document.body.appendChild(document.createTextNode(' and '));
+		(async function() {
+			try {
+				await storage.set('yo', 'face');
+				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
+			} catch(e) {
+				let a = document.createElement('a');
+				a.appendChild(document.createTextNode(`yes in ${performance.now() - beginning} ms`));
+				a.href = 'https://bugzilla.mozilla.org/show_bug.cgi?id=781982'
+				document.body.appendChild(a);
+			}
+		})();
+	} else {
+		document.body.appendChild(document.createTextNode(`not firefox detected in ${performance.now() - beginning}ms`));
+		document.body.appendChild(document.createElement("br"));
+		beginning = performance.now();
+		document.body.appendChild(document.createTextNode(`private `));
+		(async function() {
+			await (await navigator.serviceWorker.getRegistration())?.unregister();
+			try {
+				await navigator.serviceWorker.register('ServiceWorker.js');
+				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
+			} catch(e) {
+				let a = document.createElement('a');
+				a.appendChild(document.createTextNode(`yes in ${performance.now() - beginning} ms`));
+				a.href = 'https://bugs.chromium.org/p/chromium/issues/detail?id=818045';
+				document.body.appendChild(a);
+			}
+		})();
+	}
+</script>
