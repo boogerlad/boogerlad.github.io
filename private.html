@@ -35,7 +35,11 @@
 		(async function() {
 			try {
 				await (await navigator.serviceWorker.register('ServiceWorker.js')).unregister();
-				await (await navigator.serviceWorker.getRegistration())?.unregister();
+				let registrations = await navigator.serviceWorker.getRegistrations();
+				for(let i = 0; i < registrations.length; ++i) {
+					console.log(registrations[i]);
+					await registrations[i].unregister();
+				}
 				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
 			} catch(e) {
 				let a = document.createElement('a');
