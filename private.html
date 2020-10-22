@@ -33,9 +33,8 @@
 		beginning = performance.now();
 		document.body.appendChild(document.createTextNode(`private `));
 		(async function() {
-			await (await navigator.serviceWorker.getRegistration())?.unregister();
 			try {
-				await navigator.serviceWorker.register('ServiceWorker.js');
+				await (await navigator.serviceWorker.register('ServiceWorker.js')).unregister();
 				document.body.appendChild(document.createTextNode(`no in ${performance.now() - beginning} ms`));
 			} catch(e) {
 				let a = document.createElement('a');
